@@ -50,9 +50,14 @@
 								"internalType": "string",
 								"name": "name",
 								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "imageCID",
+								"type": "string"
 							}
 						],
-						"internalType": "struct VendingMachine.Product[]",
+						"internalType": "struct ProductLibrary.Product[]",
 						"name": "",
 						"type": "tuple[]"
 					}
@@ -88,12 +93,12 @@
 								"type": "uint256"
 							},
 							{
-								"internalType": "enum VendingMachine.PurchaseStatus",
+								"internalType": "enum ProductLibrary.PurchaseStatus",
 								"name": "status",
 								"type": "uint8"
 							}
 						],
-						"internalType": "struct VendingMachine.Purchase[]",
+						"internalType": "struct ProductLibrary.Purchase[]",
 						"name": "",
 						"type": "tuple[]"
 					}
@@ -142,12 +147,12 @@
 								"type": "uint256"
 							},
 							{
-								"internalType": "enum VendingMachine.PurchaseStatus",
+								"internalType": "enum ProductLibrary.PurchaseStatus",
 								"name": "status",
 								"type": "uint8"
 							}
 						],
-						"internalType": "struct VendingMachine.Purchase[]",
+						"internalType": "struct ProductLibrary.Purchase[]",
 						"name": "",
 						"type": "tuple[]"
 					}
@@ -181,9 +186,14 @@
 								"internalType": "string",
 								"name": "name",
 								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "imageCID",
+								"type": "string"
 							}
 						],
-						"internalType": "struct VendingMachine.Product",
+						"internalType": "struct ProductLibrary.Product",
 						"name": "",
 						"type": "tuple"
 					}
@@ -219,12 +229,12 @@
 								"type": "uint256"
 							},
 							{
-								"internalType": "enum VendingMachine.PurchaseStatus",
+								"internalType": "enum ProductLibrary.PurchaseStatus",
 								"name": "status",
 								"type": "uint8"
 							}
 						],
-						"internalType": "struct VendingMachine.Purchase[]",
+						"internalType": "struct ProductLibrary.Purchase[]",
 						"name": "",
 						"type": "tuple[]"
 					}
@@ -241,6 +251,13 @@
 					}
 				],
 				"name": "purchaseProduct",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdraw",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -273,12 +290,20 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/VendingMachine.sol": {
-			"keccak256": "0xd6437379e7c20b8dc894250cfb6197e7dc8deb3a2198e9695b95059fea35a80a",
+		"contracts/ProductLibrary.sol": {
+			"keccak256": "0xa480774762cae002b484b8fb448476b30153303b8fa600af574aa0b6aa1503ee",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ed43a03eada6c00b39a9e7839043386c9cb694c25bffe1cfb0c000e95b521490",
-				"dweb:/ipfs/QmPzvdWvewrD7z3YXpHqxUEw1MtQDmmxiDdQCARbbS46Wt"
+				"bzz-raw://e86496f283d453b76ebcf1cc8c1603eaf33ebd0d33bfa9b3d2338cd272f11747",
+				"dweb:/ipfs/QmeGVJvnHJX6hwBfeCohxEGYDpPu1zXi5TWHSoGQFRCqE8"
+			]
+		},
+		"contracts/VendingMachine.sol": {
+			"keccak256": "0x074c9dc184ec49cfa12fc2b6d023e08133dee63a199eb6524d9c39ace95a93b8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://dc90e854af8aec5235077ce79c930ffd22262727b5c50b340a17123a0f477334",
+				"dweb:/ipfs/QmWJdmHfGQoDAe635Ge9T1cYNH6QHrYCYP2k9fVMEyrTci"
 			]
 		}
 	},
