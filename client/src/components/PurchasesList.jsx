@@ -1,13 +1,22 @@
-import { useState } from 'react';
+import { imageGateway } from '../config/contract';
+import usePurchases from '../hooks/usePurchases';
 
-function PurchasesList({ purchases, onClose, onConsume }) {
-  const [activeTab, setActiveTab] = useState('available');
+function PurchasesList({ onClose, onConsume }) {
+  const {
+    activeTab,
+    setActiveTab,
+    availablePurchases,
+    consumedPurchases
+  } = usePurchases();
 
-  const availablePurchases = purchases.filter(p => !p.consumed);
-  const consumedPurchases = purchases.filter(p => p.consumed);
+  const handleOverlayClick = (e) => {
+    if (e.target.className === 'purchases-modal') {
+      onClose();
+    }
+  };
 
   return (
-    <div className="purchases-modal">
+    <div className="purchases-modal" onClick={handleOverlayClick}>
       <div className="purchases-content">
         <div className="purchases-header">
           <h2>My Purchases</h2>
@@ -40,7 +49,7 @@ function PurchasesList({ purchases, onClose, onConsume }) {
               availablePurchases.map(purchase => (
                 <div key={purchase.id} className="purchase-item available-item">
                   <div className="purchase-image">
-                    <img src={purchase.image} alt={purchase.name} />
+                    <img src={`${imageGateway}${purchase.image}`} alt={purchase.name} />
                   </div>
                   <div className="purchase-details">
                     <h3>{purchase.name}</h3>
@@ -75,7 +84,7 @@ function PurchasesList({ purchases, onClose, onConsume }) {
               consumedPurchases.map(purchase => (
                 <div key={purchase.id} className="purchase-item consumed-item">
                   <div className="purchase-image">
-                    <img src={purchase.image} alt={purchase.name} />
+                    <img src={`${imageGateway}${purchase.image}`} alt={purchase.name} />
                   </div>
                   <div className="purchase-details">
                     <h3>{purchase.name}</h3>

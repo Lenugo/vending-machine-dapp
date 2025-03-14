@@ -1,16 +1,18 @@
 import { useState } from 'react';
+import { imageGateway } from '../config/contract';
 
 function VendingMachine({
   products,
-  wallet,
+  balance,
   selectedProduct,
   onSelectProduct,
   onClearSelection,
   onPurchase,
   onAddMoney,
-  onAddCustomAmount,
-  purchasesCount,
-  onViewPurchases
+  onViewPurchases,
+  isLoading,
+  error,
+  onRetry
 }) {
   const [customAmount, setCustomAmount] = useState('');
 
@@ -23,44 +25,41 @@ function VendingMachine({
   };
 
   const handleAddCustomAmount = () => {
-    onAddCustomAmount(parseFloat(customAmount));
+    onAddMoney(Number(customAmount));
     setCustomAmount('');
   };
 
-  const rows = ['A', 'B', 'C', 'D'];
-  const cols = [1, 2, 3, 4, 5];
+  if (isLoading) {
+    return (
+      <div className='loading-container'>
+        <div className="loading-spinner"></div>
+        <p>Loading products...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} onRetry={onRetry} />;
+  }
 
   return (
     <div className="vending-machine">
-      <h1>Smart Vending Machine</h1>
-
       <div className="main-content">
         <div className="products-section">
           <h2 className='products-section--title'>SNACKS & DRINKS</h2>
 
-          <div className="products-grid">
-            {rows.map(row => (
-              <div key={row} className="product-row">
-                {cols.map(col => {
-                  const productId = `${row}${col}`;
-                  const product = products.find(p => p.id === productId);
-
-                  return (
-                    <div
-                      key={productId}
-                      className={`product-item ${selectedProduct === productId ? 'selected' : ''}`}
-                      onClick={() => {
-                        onSelectProduct(productId);
-                      }}
-                    >
-                      <div className="product-code">{productId}</div>
-                      <div className="product-image">
-                        <img src={product.image} alt={product.name} loading='eager' />
-                      </div>
-                      <div className="product-price">${product.price.toFixed(2)}</div>
-                    </div>
-                  );
-                })}
+          <div className='products-grid'>
+            {products.map(product => (
+              <div key={product?.code}>
+                <div
+                  onClick={() => onSelectProduct(product?.code)}
+                  className={`product-item ${selectedProduct === (product?.code) ? 'selected' : ''}`}>
+                  <div className="product-code">{product?.code}</div>
+                  <div className="product-image">
+                    <img src={`${imageGateway}${product.image}`} alt={product?.name} loading='eager' />
+                  </div>
+                  <div className="product-price">${Number(product?.price).toFixed(2)}</div>
+                </div>
               </div>
             ))}
           </div>
@@ -88,7 +87,7 @@ function VendingMachine({
             <button
               className="purchase-button"
               onClick={handlePurchase}
-              disabled={!selectedProduct || wallet.currentAmount < (products.find(p => p.id === selectedProduct)?.price || 0)}
+              disabled={!selectedProduct || balance < (products.find(p => p.id === selectedProduct)?.price || 0)}
             >
               Purchase
             </button>
@@ -97,7 +96,7 @@ function VendingMachine({
           <div className="payment-section">
             <h3>Payment System</h3>
             <div className="display">
-              <div className="display-amount">${wallet.currentAmount.toFixed(2)}</div>
+              <div className="display-amount">${Number(balance).toFixed(2)}</div>
             </div>
 
             <div className="amount-input">
@@ -128,7 +127,7 @@ function VendingMachine({
         className="view-purchases-button"
         onClick={onViewPurchases}
       >
-        View My Purchases ({purchasesCount})
+        View My Purchases ({products.length})
       </button>
     </div>
   );

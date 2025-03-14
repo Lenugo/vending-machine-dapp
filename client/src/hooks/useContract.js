@@ -1,0 +1,143 @@
+import { useState, useEffect } from 'react';
+import Web3 from 'web3';
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../config/contract';
+
+const useContract = () => {
+  const [contract, setContract] = useState(null);
+  const [web3, setWeb3] = useState(null);
+  const [account, setAccount] = useState('');
+
+  useEffect(() => {
+    const initContract = async () => {
+      if (typeof window.ethereum !== 'undefined') {
+        const web3Instance = new Web3(window.ethereum);
+        setWeb3(web3Instance);
+        
+        const contractInstance = new web3Instance.eth.Contract(
+          CONTRACT_ABI,
+          CONTRACT_ADDRESS
+        );
+        setContract(contractInstance);
+
+        try {
+          const accounts = await window.ethereum.request({
+            method: 'eth_requestAccounts'
+          });
+          setAccount(accounts[0]);
+          console.log(account)
+        } catch (error) {
+          console.error('User denied account access', error);
+        }
+      }
+    };
+
+    initContract();
+  }, [account]);
+
+  const getAllProducts = async () => {
+    if (!contract) return [];
+    
+    try {
+      const products = await contract.methods.getAllProducts().call();
+      return products.map(product => ({
+        code: product.code,
+        price: web3.utils.fromWei(product.price, 'gwei'),
+        name: product.name,
+        image: product.imageCID
+      }));
+    } catch (error) {
+      console.error('Failed to fetch products:', error)
+      return [];
+    }
+  };
+
+  const getBalance = async () => {
+    if (!contract || !account) return '0';
+
+    try {
+      const balance = await contract.methods.getBalance().call({ from: account });
+      return web3.utils.fromWei(balance, 'gwei');
+    } catch (error) {
+      console.error('Failed to fetch balance:', error);
+      return '0';
+    }
+  };
+
+  const purchaseProduct = async (code, price) => {
+    if (!contract || !account) return false;
+    
+    try {
+      const priceInWei = web3.utils.toWei(price.toString(), 'gwei');
+      
+      await contract.methods.purchaseProduct(code).send({
+        from: account,
+        value: priceInWei
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('Product purchase failed:', error);
+      return false;
+    }
+  };
+
+  const addFunds = async (funds) => {
+    if (!contract || !account) return;
+
+    try {
+      const fundsInGwei = web3.utils.toWei(funds.toString(), 'gwei');
+      
+      await contract.methods.addFunds().send({
+        from: account,
+        value: fundsInGwei
+      });
+    } catch (error) {
+      console.error('Balance addition failed:', error);
+      return;
+    }
+  };
+
+  const getPurchaseByStatus = async (statusId = 0) => {
+    if (!contract || !account) return [];
+
+    try {
+      const purchases = await contract.methods.getPurchaseByStatus(account, statusId).call({ from: account });
+      return purchases.map(purchase => ({
+        id: purchase.id,
+        name: purchase.name,
+        image: purchase.imageCID,
+        price: web3.utils.fromWei(purchase.price, 'gwei'),
+        date: purchase.purchaseDate,
+        consumed: purchase.consumed
+      }));
+    } catch (error) {
+      console.error('Failed to fetch purchases:', error);
+      return [];
+    }
+  };
+
+  const consumeProduct = async (index) => {
+    if (!contract || !account) return;
+
+    try {
+      await contract.methods.consumePurchase(index).send({ from: account });
+    } catch (error) {
+      console.error('Product consumption failed:', error);
+      return;
+    }
+  }
+
+  return {
+    contract,
+    web3,
+    account,
+    getAllProducts,
+    getBalance,
+    purchaseProduct,
+    getPurchaseByStatus,
+    consumeProduct,
+    addFunds
+  };
+};
+
+export default useContract;
