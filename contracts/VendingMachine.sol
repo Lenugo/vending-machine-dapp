@@ -40,7 +40,7 @@ contract VendingMachine {
     function initializeProducts() private {
         products.push(ProductLibrary.Product("A1", 15 * GWEI_MULTIPLIER, "Lays", concatIPFSReference("lays.png")));
         products.push(ProductLibrary.Product("A2", 175 * SMALL_GWEI_MULTIPLIER, "Coca Cola", concatIPFSReference("coca-cola.png")));
-        products.push(ProductLibrary.Product("A3", 15 * GWEI_MULTIPLIER, "Pringles", concatIPFSReference("pingles.png")));
+        products.push(ProductLibrary.Product("A3", 15 * GWEI_MULTIPLIER, "Pringles", concatIPFSReference("pringles.png")));
         products.push(ProductLibrary.Product("A4", 175 * SMALL_GWEI_MULTIPLIER, "Water", concatIPFSReference("water.png")));
         products.push(ProductLibrary.Product("A5", 15 * GWEI_MULTIPLIER, "Energy Drink", concatIPFSReference("red-bull.png")));
         products.push(ProductLibrary.Product("B1", 20 * GWEI_MULTIPLIER, "Sandwich", concatIPFSReference("sandwich.png")));
@@ -60,7 +60,7 @@ contract VendingMachine {
         products.push(ProductLibrary.Product("D5", 125 * SMALL_GWEI_MULTIPLIER, "Red Apple", concatIPFSReference("apple.png")));
     }
 
-    function getProductByCode(string memory _productId) public view returns (ProductLibrary.Product memory) {
+    function getProductByCode(string memory _productId) private view returns (ProductLibrary.Product memory) {
          for (uint i = 0; i < products.length; i++) {
             if (keccak256(abi.encodePacked(products[i].code)) == keccak256(abi.encodePacked(_productId))) {
                 return products[i]; 
@@ -73,16 +73,16 @@ contract VendingMachine {
         return products;
     }
 
-    function addFunds() public onlyOwner payable {
+    function addFunds() public payable {
         require(msg.value > 0, "Missing required amount");
         balances[msg.sender] += msg.value;
     }
 
-    function getBalance() public view onlyOwner returns (uint) {
+    function getBalance() public view returns (uint) {
         return balances[msg.sender];
     }
     
-    function purchaseProduct(string memory _productId) public onlyOwner {
+    function purchaseProduct(string memory _productId) public {
         uint productPrice = getProductByCode(_productId).price;
         require(balances[msg.sender] >= productPrice, "Insufficient funds");
 
@@ -90,23 +90,7 @@ contract VendingMachine {
         purchases.push(ProductLibrary.Purchase(msg.sender, _productId, block.timestamp, ProductLibrary.PurchaseStatus.Available));
     }
 
-    function getPurchases(address _buyer) public view onlyOwner returns (ProductLibrary.Purchase[] memory) {
-        ProductLibrary.Purchase[] memory userPurchases = new ProductLibrary.Purchase[](purchases.length);
-        uint count = 0;
-        for (uint i = 0; i < purchases.length; i++) {
-            if (purchases[i].buyer == _buyer) {
-                userPurchases[count] = purchases[i];
-                count++;
-            }
-        }
-        ProductLibrary.Purchase[] memory result = new ProductLibrary.Purchase[](count);
-        for(uint i = 0; i < count; i++){
-            result[i] = userPurchases[i];
-        }
-        return result;
-    }
-
-    function consumePurchase(uint _purchaseIndex) public onlyOwner {
+    function consumePurchase(uint _purchaseIndex) public {
         require(_purchaseIndex < purchases.length, "Invalid purchase index");
         require(purchases[_purchaseIndex].buyer == msg.sender, "Not your purchase");
         require(purchases[_purchaseIndex].status == ProductLibrary.PurchaseStatus.Available, "Purchase already consumed");
@@ -114,34 +98,29 @@ contract VendingMachine {
         purchases[_purchaseIndex].status = ProductLibrary.PurchaseStatus.Consumed;
     }
 
-    function getAvailablePurchases(address _buyer) public view onlyOwner returns (ProductLibrary.Purchase[] memory) {
-        ProductLibrary.Purchase[] memory availablePurchases = new ProductLibrary.Purchase[](purchases.length);
+    function getPurchasesByStatus(address _buyer, ProductLibrary.PurchaseStatus _status) public view returns (ProductLibrary.PurchaseInfo[] memory) {
         uint count = 0;
         for (uint i = 0; i < purchases.length; i++) {
-            if (purchases[i].buyer == _buyer && purchases[i].status == ProductLibrary.PurchaseStatus.Available) {
-                availablePurchases[count] = purchases[i];
+            if (purchases[i].buyer == _buyer && purchases[i].status == _status) {
                 count++;
             }
         }
-        ProductLibrary.Purchase[] memory result = new ProductLibrary.Purchase[](count);
-        for (uint i = 0; i < count; i++) {
-            result[i] = availablePurchases[i];
-        }
-        return result;
-    }
 
-    function getConsumedPurchases(address _buyer) public view onlyOwner returns (ProductLibrary.Purchase[] memory) {
-        ProductLibrary.Purchase[] memory consumedPurchases = new ProductLibrary.Purchase[](purchases.length);
-        uint count = 0;
+        ProductLibrary.PurchaseInfo[] memory result = new ProductLibrary.PurchaseInfo[](count);
+        uint index = 0;
         for (uint i = 0; i < purchases.length; i++) {
-            if (purchases[i].buyer == _buyer && purchases[i].status == ProductLibrary.PurchaseStatus.Consumed) {
-                consumedPurchases[count] = purchases[i];
-                count++;
+            if (purchases[i].buyer == _buyer && purchases[i].status == _status) {
+                ProductLibrary.Product memory product = getProductByCode(purchases[i].productId);
+                result[index] = ProductLibrary.PurchaseInfo({
+                    id: i,
+                    name: product.name,
+                    image: product.imageCID,
+                    price: product.price,
+                    purchaseDate: purchases[i].timestamp,
+                    consumed: _status == ProductLibrary.PurchaseStatus.Consumed
+                });
+                index++;
             }
-        }
-        ProductLibrary.Purchase[] memory result = new ProductLibrary.Purchase[](count);
-        for (uint i = 0; i < count; i++) {
-            result[i] = consumedPurchases[i];
         }
         return result;
     }

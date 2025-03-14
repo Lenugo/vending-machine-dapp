@@ -17,5 +17,19 @@ library ProductLibrary {
         uint timestamp;
         PurchaseStatus status;
     }
+
+    struct ProductPurchase {
+        Product product;
+        Purchase purchase;
+    }
+
+    struct PurchaseInfo {
+        uint256 id;
+        string name;
+        string image;
+        uint256 price;
+        uint256 purchaseDate;
+        bool consumed;
+    }
 }
 
