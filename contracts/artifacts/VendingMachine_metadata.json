@@ -50,9 +50,14 @@
 								"internalType": "string",
 								"name": "name",
 								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "imageCID",
+								"type": "string"
 							}
 						],
-						"internalType": "struct VendingMachine.Product[]",
+						"internalType": "struct ProductLibrary.Product[]",
 						"name": "",
 						"type": "tuple[]"
 					}
@@ -88,12 +93,12 @@
 								"type": "uint256"
 							},
 							{
-								"internalType": "enum VendingMachine.PurchaseStatus",
+								"internalType": "enum ProductLibrary.PurchaseStatus",
 								"name": "status",
 								"type": "uint8"
 							}
 						],
-						"internalType": "struct VendingMachine.Purchase[]",
+						"internalType": "struct ProductLibrary.Purchase[]",
 						"name": "",
 						"type": "tuple[]"
 					}
@@ -142,50 +147,14 @@
 								"type": "uint256"
 							},
 							{
-								"internalType": "enum VendingMachine.PurchaseStatus",
+								"internalType": "enum ProductLibrary.PurchaseStatus",
 								"name": "status",
 								"type": "uint8"
 							}
 						],
-						"internalType": "struct VendingMachine.Purchase[]",
+						"internalType": "struct ProductLibrary.Purchase[]",
 						"name": "",
 						"type": "tuple[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "string",
-						"name": "_productId",
-						"type": "string"
-					}
-				],
-				"name": "getProductByCode",
-				"outputs": [
-					{
-						"components": [
-							{
-								"internalType": "string",
-								"name": "code",
-								"type": "string"
-							},
-							{
-								"internalType": "uint256",
-								"name": "price",
-								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "name",
-								"type": "string"
-							}
-						],
-						"internalType": "struct VendingMachine.Product",
-						"name": "",
-						"type": "tuple"
 					}
 				],
 				"stateMutability": "view",
@@ -219,12 +188,12 @@
 								"type": "uint256"
 							},
 							{
-								"internalType": "enum VendingMachine.PurchaseStatus",
+								"internalType": "enum ProductLibrary.PurchaseStatus",
 								"name": "status",
 								"type": "uint8"
 							}
 						],
-						"internalType": "struct VendingMachine.Purchase[]",
+						"internalType": "struct ProductLibrary.Purchase[]",
 						"name": "",
 						"type": "tuple[]"
 					}
@@ -241,6 +210,13 @@
 					}
 				],
 				"name": "purchaseProduct",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdraw",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -273,12 +249,20 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/VendingMachine.sol": {
-			"keccak256": "0xd6437379e7c20b8dc894250cfb6197e7dc8deb3a2198e9695b95059fea35a80a",
+		"contracts/ProductLibrary.sol": {
+			"keccak256": "0x401a7508352a3f9adb4af94d05553fbf5de4786e708640a8de41c5e226a0f160",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ed43a03eada6c00b39a9e7839043386c9cb694c25bffe1cfb0c000e95b521490",
-				"dweb:/ipfs/QmPzvdWvewrD7z3YXpHqxUEw1MtQDmmxiDdQCARbbS46Wt"
+				"bzz-raw://82388f9a393195a72740cb2d8fbe217036e0d5e72ebd6c002679e8ebc7b1fd9d",
+				"dweb:/ipfs/QmefmozBeXwWze413bykmqYP3uYZkh729mj567jMdU3ggs"
+			]
+		},
+		"contracts/VendingMachine.sol": {
+			"keccak256": "0x39cd88a49d1925f8e68c30ccb12baf2a46f7437afb9e4f971ff0b6104359bc02",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8ddbaa0bf72add3970966d1870b46d3b88c672b54cd714102d86c153ca5adc0c",
+				"dweb:/ipfs/QmVqf1QTfoXgHqEP1Y94Q1ybKf6JcPp6ACUYTnGszSmb8r"
 			]
 		}
 	},
