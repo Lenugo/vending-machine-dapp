@@ -6,16 +6,16 @@ const useVendingMachine = () => {
   const [showPurchases, setShowPurchases] = useState(false);
   const [balance, setBalance] = useState(0);
   const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { 
+  const {
     account, 
     getAllProducts, 
     getBalance, 
     purchaseProduct, 
     addFunds, 
-    consumeProduct 
+    consumeProduct
   } = useContract();
 
   const addMoney = async (amount) => {
@@ -44,7 +44,7 @@ const useVendingMachine = () => {
       return;
     }
 
-    await purchaseProduct(product.code, product.price);
+    await purchaseProduct(product.code);
     const newBalance = await getBalance();
     setBalance(newBalance);
     setSelectedProduct('');

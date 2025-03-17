@@ -49,14 +49,14 @@ function PurchasesList({ onClose, onConsume }) {
               availablePurchases.map(purchase => (
                 <div key={purchase.id} className="purchase-item available-item">
                   <div className="purchase-image">
-                    <img src={`${imageGateway}${purchase.image}`} alt={purchase.name} />
+                    <img src={`${imageGateway}${purchase?.image}`} alt={purchase?.name} />
                   </div>
                   <div className="purchase-details">
-                    <h3>{purchase.name}</h3>
+                    <h3>{purchase?.name}</h3>
                     <p className="purchase-date">
-                      Purchased on {purchase.purchaseDate.toLocaleDateString()}
+                      Purchased on {new Date(Number(purchase?.date) * 1000).toLocaleDateString()}
                     </p>
-                    <p className="purchase-price">${purchase.price.toFixed(2)}</p>
+                    <p className="purchase-price">${purchase?.price}</p>
                   </div>
                   <div className="purchase-status">
                     <span className="status-badge available">Available</span>
@@ -84,14 +84,14 @@ function PurchasesList({ onClose, onConsume }) {
               consumedPurchases.map(purchase => (
                 <div key={purchase.id} className="purchase-item consumed-item">
                   <div className="purchase-image">
-                    <img src={`${imageGateway}${purchase.image}`} alt={purchase.name} />
+                    <img src={`${imageGateway}${purchase?.image}`} alt={purchase?.name} />
                   </div>
                   <div className="purchase-details">
-                    <h3>{purchase.name}</h3>
+                    <h3>{purchase?.name}</h3>
                     <p className="purchase-date">
-                      Purchased on {purchase.purchaseDate.toLocaleDateString()}
+                      Purchased on {new Date(Number(purchase?.date) * 1000).toLocaleDateString()}
                     </p>
-                    <p className="purchase-price">${purchase.price.toFixed(2)}</p>
+                    <p className="purchase-price">${purchase?.price}</p>
                   </div>
                   <div className="purchase-status">
                     <span className="status-badge consumed">Consumed</span>

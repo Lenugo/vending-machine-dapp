@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { imageGateway } from '../config/contract';
+import usePurchases from '../hooks/usePurchases';
 
 function VendingMachine({
   products,
@@ -15,6 +16,7 @@ function VendingMachine({
   onRetry
 }) {
   const [customAmount, setCustomAmount] = useState('');
+  const { purchases } = usePurchases();
 
   const handleClear = () => {
     onClearSelection();
@@ -127,7 +129,7 @@ function VendingMachine({
         className="view-purchases-button"
         onClick={onViewPurchases}
       >
-        View My Purchases ({products.length})
+        View My Purchases ({purchases.length})
       </button>
     </div>
   );

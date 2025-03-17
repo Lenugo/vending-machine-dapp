@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import useContract from './useContract';
 
 const usePurchases = () => {
-  const { getPurchaseByStatus } = useContract();
+  const { getPurchases } = useContract();
   const [activeTab, setActiveTab] = useState('available');
   const [purchases, setPurchases] = useState([]);
 
@@ -11,7 +11,7 @@ const usePurchases = () => {
 
   const fetchPurchases = async () => {
     try {
-      const purchases = await getPurchaseByStatus(0);
+      const purchases = await getPurchases();
       setPurchases(purchases);
     } catch (error) {
       console.error('Failed to fetch purchases:', error);

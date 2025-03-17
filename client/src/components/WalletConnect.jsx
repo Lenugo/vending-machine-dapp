@@ -1,26 +1,7 @@
-import { useState } from 'react';
+import useContract from '../hooks/useContract';
 
 const WalletConnect = () => {
-  const [account, setAccount] = useState('');
-  // console.log(account)
-
-  const handleConnect = async () => {
-    if (typeof window.ethereum === 'undefined') {
-      alert('No web3 provider detected.')
-      return;
-    }
-
-    try {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      setAccount(accounts[0]);
-      window.ethereum.on('accountsChanged', function (accounts) {
-        setAccount(accounts[0]);
-      });
-
-    } catch (err) {
-      console.error('User denied account access', err);
-    }
-  };
+  const { account, handleConnect } = useContract()
 
   return (
     <div className="wallet-connect">

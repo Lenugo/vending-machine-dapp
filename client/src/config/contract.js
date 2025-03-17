@@ -1,8 +1,12 @@
-// Etherscan address: https://sepolia.etherscan.io/tx/0x4b4d14a9ad3629b16d547e2bc207507d99afeccda7b0533e58f35b8e85e6b047
-export const imageGateway = 'https://thundering-black-zebra.myfilebase.com/ipfs/';
-export const CONTRACT_ADDRESS = '0x38b7A06C783bDd1cD3d88FFd91EbB5019E8f773b';
+export const imageGateway = import.meta.env.VITE_IPFS_GATEWAY;
+export const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
 
 export const CONTRACT_ABI = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
 	{
 		"inputs": [],
 		"name": "addFunds",
@@ -19,31 +23,6 @@ export const CONTRACT_ABI = [
 			}
 		],
 		"name": "consumePurchase",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_productId",
-				"type": "string"
-			}
-		],
-		"name": "purchaseProduct",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "withdraw",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -84,32 +63,14 @@ export const CONTRACT_ABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "getBalance",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "address",
 				"name": "_buyer",
 				"type": "address"
-			},
-			{
-				"internalType": "enum ProductLibrary.PurchaseStatus",
-				"name": "_status",
-				"type": "uint8"
 			}
 		],
-		"name": "getPurchasesByStatus",
+		"name": "getAllPurchases",
 		"outputs": [
 			{
 				"components": [
@@ -150,6 +111,39 @@ export const CONTRACT_ABI = [
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getBalance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_productId",
+				"type": "string"
+			}
+		],
+		"name": "purchaseProduct",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

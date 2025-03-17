@@ -1,38 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useWeb3 } from '../context/Web3Context';
 import Web3 from 'web3';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../config/contract';
 
 const useContract = () => {
-  const [contract, setContract] = useState(null);
-  const [web3, setWeb3] = useState(null);
-  const [account, setAccount] = useState('');
+  const { 
+    account, 
+    setAccount, 
+    contract, 
+    setContract, 
+    web3, 
+    setWeb3 
+  } = useWeb3();
 
-  useEffect(() => {
-    const initContract = async () => {
-      if (typeof window.ethereum !== 'undefined') {
-        const web3Instance = new Web3(window.ethereum);
-        setWeb3(web3Instance);
-        
-        const contractInstance = new web3Instance.eth.Contract(
-          CONTRACT_ABI,
-          CONTRACT_ADDRESS
-        );
-        setContract(contractInstance);
+  const handleConnect = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      const web3Instance = new Web3(window.ethereum);
+      setWeb3(web3Instance);
+      
+      const contractInstance = new web3Instance.eth.Contract(
+        CONTRACT_ABI,
+        CONTRACT_ADDRESS
+      );
+      setContract(contractInstance);
 
-        try {
-          const accounts = await window.ethereum.request({
-            method: 'eth_requestAccounts'
-          });
-          setAccount(accounts[0]);
-          console.log(account)
-        } catch (error) {
-          console.error('User denied account access', error);
-        }
+      try {
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts'
+        });
+        setAccount(accounts[0]);
+
+        window.ethereum.on('accountsChanged', (newAccounts) => {
+          setAccount(newAccounts[0] || '');
+        });
+
+      } catch (error) {
+        console.error('User denied account access', error);
       }
-    };
-
-    initContract();
-  }, [account]);
+    }
+  };
 
   const getAllProducts = async () => {
     if (!contract) return [];
@@ -63,15 +68,13 @@ const useContract = () => {
     }
   };
 
-  const purchaseProduct = async (code, price) => {
+  const purchaseProduct = async (code) => {
     if (!contract || !account) return false;
     
-    try {
-      const priceInWei = web3.utils.toWei(price.toString(), 'gwei');
-      
+    try {  
       await contract.methods.purchaseProduct(code).send({
         from: account,
-        value: priceInWei
+        gas: 300000
       });
       
       return true;
@@ -97,15 +100,15 @@ const useContract = () => {
     }
   };
 
-  const getPurchaseByStatus = async (statusId = 0) => {
+  const getPurchases = async () => {
     if (!contract || !account) return [];
 
     try {
-      const purchases = await contract.methods.getPurchaseByStatus(account, statusId).call({ from: account });
+      const purchases = await contract.methods.getAllPurchases(account).call({ from: account });
       return purchases.map(purchase => ({
         id: purchase.id,
         name: purchase.name,
-        image: purchase.imageCID,
+        image: purchase.image,
         price: web3.utils.fromWei(purchase.price, 'gwei'),
         date: purchase.purchaseDate,
         consumed: purchase.consumed
@@ -134,9 +137,10 @@ const useContract = () => {
     getAllProducts,
     getBalance,
     purchaseProduct,
-    getPurchaseByStatus,
+    getPurchases,
     consumeProduct,
-    addFunds
+    addFunds,
+    handleConnect
   };
 };
 
