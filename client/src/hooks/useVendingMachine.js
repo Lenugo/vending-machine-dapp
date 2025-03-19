@@ -55,19 +55,19 @@ const useVendingMachine = () => {
   };
 
   const loadInit = async () => {
-    if (account) {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const fetchedProducts = await getAllProducts();
-        setProducts(fetchedProducts);
-        const currentBalance = await getBalance();
-        setBalance(currentBalance);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
+    if (!account) return;
+    
+    try {
+      setIsLoading(true);
+      setError(null);
+      const fetchedProducts = await getAllProducts();
+      setProducts(fetchedProducts);
+      const currentBalance = await getBalance();
+      setBalance(currentBalance);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

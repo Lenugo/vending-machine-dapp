@@ -23,7 +23,7 @@ function NoContract() {
           onClick={handleConnect}
           style={{ backgroundColor: '#3b82f6', color: 'white', padding: '12px', borderRadius: '12px', border: 'none', marginTop: '1rem', cursor: 'pointer' }}
         >
-          Connect wallet
+          Connect Wallet
         </button>
       </div>
     </div>

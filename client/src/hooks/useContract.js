@@ -1,4 +1,4 @@
-import { useWeb3 } from '../context/Web3Context';
+import { useWeb3 } from '../context/web3context';
 import Web3 from 'web3';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../config/contract';
 
@@ -27,14 +27,12 @@ const useContract = () => {
         const accounts = await window.ethereum.request({
           method: 'eth_requestAccounts'
         });
-        setAccount(accounts[0]);
-
+        setAccount(accounts[0]);        
         window.ethereum.on('accountsChanged', (newAccounts) => {
           setAccount(newAccounts[0] || '');
         });
-
-      } catch (error) {
-        console.error('User denied account access', error);
+      } catch {
+        throw new Error('User denied account access');
       }
     }
   };
@@ -71,7 +69,7 @@ const useContract = () => {
   const purchaseProduct = async (code) => {
     if (!contract || !account) return false;
     
-    try {  
+    try {
       await contract.methods.purchaseProduct(code).send({
         from: account,
         gas: 300000
