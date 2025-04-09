@@ -5,7 +5,7 @@ const usePurchases = () => {
   const { getPurchases, account } = useContract();
   const [activeTab, setActiveTab] = useState('available');
   const [purchases, setPurchases] = useState([]);
-
+  
   const availablePurchases = purchases.filter(p => !p.consumed);
   const consumedPurchases = purchases.filter(p => p.consumed);
 
@@ -13,6 +13,7 @@ const usePurchases = () => {
     try {
       const purchases = await getPurchases();
       setPurchases(purchases);
+      return
     } catch (error) {
       console.error('Failed to fetch purchases:', error);
     }
@@ -21,7 +22,6 @@ const usePurchases = () => {
   useEffect(() => {
     fetchPurchases();
     
-    return () => fetchPurchases();
   }, [account, purchases]);
 
   return {

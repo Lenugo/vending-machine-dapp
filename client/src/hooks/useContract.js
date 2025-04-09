@@ -17,13 +17,13 @@ const useContract = () => {
       const web3Instance = new Web3(window.ethereum);
       setWeb3(web3Instance);
       
-      const contractInstance = new web3Instance.eth.Contract(
-        CONTRACT_ABI,
-        CONTRACT_ADDRESS
-      );
-      setContract(contractInstance);
-
       try {
+        const contractInstance = new web3Instance.eth.Contract(
+          CONTRACT_ABI,
+          CONTRACT_ADDRESS
+        );
+        setContract(contractInstance);
+
         const accounts = await window.ethereum.request({
           method: 'eth_requestAccounts'
         });
