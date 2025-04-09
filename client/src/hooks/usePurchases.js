@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import useContract from './useContract';
 
 const usePurchases = () => {
-  const { getPurchases } = useContract();
+  const { getPurchases, account } = useContract();
   const [activeTab, setActiveTab] = useState('available');
   const [purchases, setPurchases] = useState([]);
 
@@ -20,10 +20,9 @@ const usePurchases = () => {
 
   useEffect(() => {
     fetchPurchases();
-    return () => {
-      fetchPurchases();
-    };
-  }, []);
+    
+    return () => fetchPurchases();
+  }, [account, purchases]);
 
   return {
     activeTab,
