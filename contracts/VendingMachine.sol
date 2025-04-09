@@ -9,7 +9,6 @@ contract VendingMachine {
     bool private locked;
 
     // Events
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     event FundsAdded(address indexed sender, uint256 amount);
     event ProductPurchased(address indexed buyer, string productId, uint256 price, uint256 timestamp);
     event PurchaseConsumed(address indexed consumer, uint256 purchaseIndex);
@@ -42,14 +41,7 @@ contract VendingMachine {
 
     constructor() {
         owner = msg.sender;
-        emit OwnershipTransferred(address(0), owner);
         initializeProducts();
-    }
-
-    function transferOwnership(address newOwner) public onlyOwner {
-        require(newOwner != address(0), "New owner is the zero address");
-        emit OwnershipTransferred(owner, newOwner);
-        owner = newOwner;
     }
 
     function concatIPFSReference(string memory _key) pure private returns (string memory) {
@@ -128,15 +120,6 @@ contract VendingMachine {
         );
     }
 
-    function consumePurchase(uint _purchaseIndex) public {
-        require(_purchaseIndex < purchases.length || _purchaseIndex > purchases.length, "Purchase index out of bounds");
-        require(purchases[_purchaseIndex].buyer == msg.sender, "Not your purchase");
-        require(purchases[_purchaseIndex].status == ProductLibrary.PurchaseStatus.Available, "Purchase already consumed");
-
-        purchases[_purchaseIndex].status = ProductLibrary.PurchaseStatus.Consumed;
-        emit PurchaseConsumed(msg.sender, _purchaseIndex);
-    }
-
     function getAllPurchases(address _buyer) public view returns (ProductLibrary.PurchaseInfo[] memory) {
         uint count = 0;
         for (uint i = 0; i < purchases.length; i++) {
@@ -162,6 +145,15 @@ contract VendingMachine {
             }
         }
         return result;
+    }
+
+    function consumePurchase(uint _purchaseIndex) public {
+        require(_purchaseIndex < purchases.length, "Invalid index");
+        require(purchases[_purchaseIndex].buyer == msg.sender, "Not your purchase");
+        require(purchases[_purchaseIndex].status == ProductLibrary.PurchaseStatus.Available, "Purchase already consumed");
+
+        purchases[_purchaseIndex].status = ProductLibrary.PurchaseStatus.Consumed;
+        emit PurchaseConsumed(msg.sender, _purchaseIndex);
     }
 
     function withdraw() public onlyOwner noReentrant {

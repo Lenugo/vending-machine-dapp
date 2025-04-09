@@ -19,6 +19,16 @@ contract TestVendingMachine {
         Assert.equal(vendingMachine.getBalance(), 0, "Balance not zero");
     }
 
+    function testProductRetrieval() public {
+        ProductLibrary.Product[] memory products = vendingMachine.getAllProducts();
+        
+        // Verify several sample products
+        Assert.equal(products[1].code, "A2", "Product A2 missing");
+        Assert.equal(products[1].name, "Coca Cola", "Product name mismatch");
+        Assert.equal(products[10].code, "C1", "Product C1 missing");
+        Assert.equal(products[10].price, 15 * 10**8, "Product price mismatch");
+    }
+
     /// #value: 5000000000000000000
     function testFundOperations() public payable {
         // Test deposit
@@ -32,6 +42,7 @@ contract TestVendingMachine {
         Assert.lesserThan(vendingMachine.getBalance(), initialBalance, "Purchase failed");
     }
 
+    /// #sender: owner
     function testPurchaseConsumption() public {
         // Ensure purchase exists
         if (vendingMachine.getAllPurchases(owner).length == 0) {
@@ -43,4 +54,5 @@ contract TestVendingMachine {
         ProductLibrary.PurchaseInfo[] memory purchases = vendingMachine.getAllPurchases(owner);
         Assert.ok(purchases[0].consumed, "Not consumed");
     }
+   
 }
