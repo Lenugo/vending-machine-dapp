@@ -11,6 +11,157 @@
 				"type": "constructor"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "FundsAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "code",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "imageCID",
+						"type": "string"
+					}
+				],
+				"name": "ProductInitialized",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "productId",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"name": "ProductPurchased",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "consumer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "purchaseIndex",
+						"type": "uint256"
+					}
+				],
+				"name": "PurchaseConsumed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "attacker",
+						"type": "address"
+					}
+				],
+				"name": "ReentrancyAttempt",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Withdrawal",
+				"type": "event"
+			},
+			{
 				"inputs": [],
 				"name": "addFunds",
 				"outputs": [],
@@ -73,32 +224,42 @@
 						"type": "address"
 					}
 				],
-				"name": "getAvailablePurchases",
+				"name": "getAllPurchases",
 				"outputs": [
 					{
 						"components": [
 							{
-								"internalType": "address",
-								"name": "buyer",
-								"type": "address"
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
 							},
 							{
 								"internalType": "string",
-								"name": "productId",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "image",
 								"type": "string"
 							},
 							{
 								"internalType": "uint256",
-								"name": "timestamp",
+								"name": "price",
 								"type": "uint256"
 							},
 							{
-								"internalType": "enum ProductLibrary.PurchaseStatus",
-								"name": "status",
-								"type": "uint8"
+								"internalType": "uint256",
+								"name": "purchaseDate",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "consumed",
+								"type": "bool"
 							}
 						],
-						"internalType": "struct ProductLibrary.Purchase[]",
+						"internalType": "struct ProductLibrary.PurchaseInfo[]",
 						"name": "",
 						"type": "tuple[]"
 					}
@@ -120,82 +281,13 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_buyer",
-						"type": "address"
-					}
-				],
-				"name": "getConsumedPurchases",
+				"inputs": [],
+				"name": "owner",
 				"outputs": [
 					{
-						"components": [
-							{
-								"internalType": "address",
-								"name": "buyer",
-								"type": "address"
-							},
-							{
-								"internalType": "string",
-								"name": "productId",
-								"type": "string"
-							},
-							{
-								"internalType": "uint256",
-								"name": "timestamp",
-								"type": "uint256"
-							},
-							{
-								"internalType": "enum ProductLibrary.PurchaseStatus",
-								"name": "status",
-								"type": "uint8"
-							}
-						],
-						"internalType": "struct ProductLibrary.Purchase[]",
-						"name": "",
-						"type": "tuple[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "address",
-						"name": "_buyer",
-						"type": "address"
-					}
-				],
-				"name": "getPurchases",
-				"outputs": [
-					{
-						"components": [
-							{
-								"internalType": "address",
-								"name": "buyer",
-								"type": "address"
-							},
-							{
-								"internalType": "string",
-								"name": "productId",
-								"type": "string"
-							},
-							{
-								"internalType": "uint256",
-								"name": "timestamp",
-								"type": "uint256"
-							},
-							{
-								"internalType": "enum ProductLibrary.PurchaseStatus",
-								"name": "status",
-								"type": "uint8"
-							}
-						],
-						"internalType": "struct ProductLibrary.Purchase[]",
 						"name": "",
-						"type": "tuple[]"
+						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -210,6 +302,19 @@
 					}
 				],
 				"name": "purchaseProduct",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -250,19 +355,19 @@
 	},
 	"sources": {
 		"contracts/ProductLibrary.sol": {
-			"keccak256": "0x401a7508352a3f9adb4af94d05553fbf5de4786e708640a8de41c5e226a0f160",
+			"keccak256": "0x80a0f8970b04b43ae4c0b22018db423b93ad1ccac010d88ce65290887f64534b",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://82388f9a393195a72740cb2d8fbe217036e0d5e72ebd6c002679e8ebc7b1fd9d",
-				"dweb:/ipfs/QmefmozBeXwWze413bykmqYP3uYZkh729mj567jMdU3ggs"
+				"bzz-raw://ffa446611bbef6b6449989b8052b3225e99cc988d6cac4b22b5d0d1894634e9a",
+				"dweb:/ipfs/Qmd66DnNTAc45eQusuHL9QvsS9PZf6zcVwWC3Ffcfg73vc"
 			]
 		},
 		"contracts/VendingMachine.sol": {
-			"keccak256": "0x39cd88a49d1925f8e68c30ccb12baf2a46f7437afb9e4f971ff0b6104359bc02",
+			"keccak256": "0xdd3cb57a082532669751ed80cb06e22d75244c3fd58521aab566c899bb285458",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8ddbaa0bf72add3970966d1870b46d3b88c672b54cd714102d86c153ca5adc0c",
-				"dweb:/ipfs/QmVqf1QTfoXgHqEP1Y94Q1ybKf6JcPp6ACUYTnGszSmb8r"
+				"bzz-raw://a65ae11f1befc0dd86c989da71b0b0aef283a86e9c664b7c7ab74c6350c1fc98",
+				"dweb:/ipfs/QmdhvBmEgaa1Vcs5cFJGZ7vKg7S94GxHuCcZEay88MBpF2"
 			]
 		}
 	},
