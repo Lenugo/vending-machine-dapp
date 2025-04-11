@@ -1,12 +1,9 @@
 # Dependencies and state files
 .deps
 .states
+.DS_Store
+remix*/
 
 # Build files
 /build
 /dist
-
-# Debug logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
