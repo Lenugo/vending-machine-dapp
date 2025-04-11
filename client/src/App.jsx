@@ -1,9 +1,11 @@
-import VendingMachine from './components/VendingMachine';
-import PurchasesList from './components/PurchasesList';
+import { lazy } from 'react';
+const VendingMachine = lazy(() => import('./components/VendingMachine'));
+const PurchasesList = lazy(() => import('./components/PurchasesList'));
+const NoWeb3Provider = lazy(() => import('./components/NoWeb3Provider'));
+const NoContract = lazy(() => import('./components/NoContract'));
+
 import WalletConnect from './components/WalletConnect';
 import useVendingMachine from './hooks/useVendingMachine';
-import NoWeb3Provider from './components/NoWeb3Provider';
-import NoContract from './components/NoContract';
 import useContract from './hooks/useContract';
 import TransactionOverlay from './components/TransactionOverlay';
 import './styles/index.css';
