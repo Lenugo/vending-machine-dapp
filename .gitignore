@@ -1,0 +1,9 @@
+# Dependencies and state files
+.deps
+.states
+.DS_Store
+remix*/
+
+# Build files
+/build
+/dist
