@@ -8,6 +8,10 @@ export function Web3Provider({ children }) {
   const [web3, setWeb3] = useState(null);
 
   useEffect(() => {
+    if (typeof window.ethereum === 'undefined') {
+      return;
+    }
+
     window.ethereum.on('accountsChanged', (accounts) => {
       setAccount(accounts[0])
     });

@@ -1,4 +1,4 @@
-import { useWeb3 } from '../context/web3context';
+import { useWeb3 } from '../context/Web3Context';
 import Web3 from 'web3';
 import { useState, useCallback } from 'react';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../config/contract';

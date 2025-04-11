@@ -1,7 +1,7 @@
 {
   "name": "vending-machine-dapp",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "homepage": "https://lenugo.github.io/vending-machine-dapp",
   "scripts": {
