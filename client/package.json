@@ -1,7 +1,7 @@
 {
   "name": "vending-machine-dapp",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.2.0",
   "type": "module",
   "homepage": "https://lenugo.github.io/vending-machine-dapp",
   "scripts": {
@@ -16,6 +16,7 @@
     "gh-pages": "^6.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-helmet-async": "^2.0.5",
     "web3": "^4.16.0"
   },
   "devDependencies": {
