@@ -34,7 +34,7 @@ function VendingMachine({
   if (isLoading) {
     return (
       <div className='loading-container'>
-        <div className="loading-spinner"></div>
+        <div className="loading-spinner-initial"></div>
         <p>Loading products...</p>
       </div>
     );

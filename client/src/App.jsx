@@ -1,4 +1,3 @@
-import './App.css';
 import VendingMachine from './components/VendingMachine';
 import PurchasesList from './components/PurchasesList';
 import WalletConnect from './components/WalletConnect';
@@ -6,6 +5,8 @@ import useVendingMachine from './hooks/useVendingMachine';
 import NoWeb3Provider from './components/NoWeb3Provider';
 import NoContract from './components/NoContract';
 import useContract from './hooks/useContract';
+import TransactionOverlay from './components/TransactionOverlay';
+import './styles/index.css';
 
 function App() {
   const {
@@ -36,6 +37,8 @@ function App() {
       {(!account && !isLoading) ?
         <NoContract /> :
         <div className="app">
+          <TransactionOverlay />
+
           <VendingMachine
             products={products}
             balance={balance}

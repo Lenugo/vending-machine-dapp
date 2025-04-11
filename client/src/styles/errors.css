@@ -1,0 +1,119 @@
+/* Error styles */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  color: white;
+  background-color: #171d28;
+  border-radius: 10px;
+  margin: 1rem;
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.retry-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  background-color: #2979ff;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.retry-button:hover {
+  background-color: #2962ff;
+}
+
+/* No web3 styles */
+.no-web3-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.no-web3-content {
+  text-align: center;
+  padding: 2rem;
+  background-color: #1f2937;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.no-web3-content h2 {
+  margin-bottom: 1rem;
+  color: #60a5fa;
+}
+
+.install-button {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #3b82f6;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.install-button:hover {
+  background-color: #2563eb;
+}
+
+/* No contract styles */
+.no-contract-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.no-contract-content {
+  text-align: center;
+  padding: 2rem;
+  background-color: #1f2937;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+  max-width: 500px;
+}
+
+.no-contract-content h2 {
+  margin-bottom: 1rem;
+  color: #60a5fa;
+}
+
+.no-contract-content ul {
+  text-align: left;
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.no-contract-content li {
+  margin: 0.5rem 0;
+}
+
+.network-switch-button {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.network-switch-button:hover {
+  background-color: #2563eb;
+}

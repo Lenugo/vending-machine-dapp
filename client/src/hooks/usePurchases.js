@@ -1,28 +1,54 @@
-import { useState, useEffect } from 'react';
-import useContract from './useContract';
+import { useState, useEffect, useCallback } from 'react';
+import useContract, { contractEvents } from './useContract';
 
 const usePurchases = () => {
   const { getPurchases, account } = useContract();
   const [activeTab, setActiveTab] = useState('available');
   const [purchases, setPurchases] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [transactionState, setTransactionState] = useState({
+    type: null,
+    status: null,
+    hash: null
+  });
   
   const availablePurchases = purchases.filter(p => !p.consumed);
   const consumedPurchases = purchases.filter(p => p.consumed);
 
-  const fetchPurchases = async () => {
+  const fetchPurchases = useCallback(async () => {
+    setLoading(true);
     try {
-      const purchases = await getPurchases();
-      setPurchases(purchases);
-      return
+      const purchasesData = await getPurchases();
+      setPurchases(purchasesData);
+      return true;
     } catch (error) {
       console.error('Failed to fetch purchases:', error);
+      return false;
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [getPurchases]);
 
   useEffect(() => {
-    fetchPurchases();
+    const unsubscribe = contractEvents.on('transactionUpdate', (status) => {
+      setTransactionState(status);
+      
+      if (status.status === 'completed' && 
+          (status.type === 'purchase' || status.type === 'consume')) {
+        fetchPurchases();
+      }
+    });
     
-  }, [account, purchases]);
+    return () => {
+      unsubscribe();
+    };
+  }, [fetchPurchases]);
+
+  useEffect(() => {
+    if (account) {
+      fetchPurchases();
+    }
+  }, [account, fetchPurchases]);
 
   return {
     activeTab,
@@ -30,7 +56,9 @@ const usePurchases = () => {
     purchases,
     availablePurchases,
     consumedPurchases,
-    fetchPurchases
+    fetchPurchases,
+    loading,
+    transactionState
   };
 };
 

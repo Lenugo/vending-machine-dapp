@@ -6,8 +6,12 @@ function PurchasesList({ onClose, onConsume }) {
     activeTab,
     setActiveTab,
     availablePurchases,
-    consumedPurchases
+    consumedPurchases,
+    transactionState
   } = usePurchases();
+
+  const isTransactionLoading = transactionState?.status === 'sending';
+  const isConsuming = isTransactionLoading && transactionState?.type === 'consume';
 
   const handleOverlayClick = (e) => {
     if (e.target.className === 'purchases-modal') {
@@ -15,8 +19,25 @@ function PurchasesList({ onClose, onConsume }) {
     }
   };
 
+  const isItemConsuming = () => {
+    return isConsuming;
+  };
+
   return (
     <div className="purchases-modal" onClick={handleOverlayClick}>
+      {isTransactionLoading && (
+        <div className="transaction-loading-overlay">
+          <div className="transaction-loading-spinner"></div>
+          <p>
+            {transactionState?.type === 'consume'
+              ? 'Consuming item...'
+              : transactionState?.type === 'purchase'
+                ? 'Purchasing item...'
+                : 'Processing transaction...'}
+          </p>
+        </div>
+      )}
+
       <div className="purchases-content">
         <div className="purchases-header">
           <h2>My Purchases</h2>
@@ -64,8 +85,17 @@ function PurchasesList({ onClose, onConsume }) {
                   <button
                     className="consume-button"
                     onClick={() => onConsume(purchase.id)}
+                    disabled={isItemConsuming(purchase.id)}
                   >
-                    <span className="consume-icon">☕</span> Consume Item
+                    {isItemConsuming(purchase.id) ? (
+                      <>
+                        <span className="loading-spinner"></span> Consuming...
+                      </>
+                    ) : (
+                      <>
+                        <span className="consume-icon">☕</span> Consume Item
+                      </>
+                    )}
                   </button>
                 </div>
               ))
