@@ -3,6 +3,7 @@
 A blockchain-powered vending machine application that allows users to purchase and consume virtual products using Ethereum.
 
 ![Smart Vending Machine](/client/public/dapp-preview.png)
+![Smart Vending Machine](/client/public/dapp-preview-purchases.png)
 
 ## Overview
 
@@ -85,17 +86,6 @@ Key functions include:
 - `addFunds()`
 - `consumePurchase(uint256 index)`
 - `getBalance()`
-
-## Future Improvements
-
-- Additional payment methods
-- Product categories
-- Admin dashboard for product management
-- Real-time notifications for transactions
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
