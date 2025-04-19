@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import "./ProductLibrary.sol";
 
 contract VendingMachine {
-    address public owner;
+    address public immutable owner;
     bool private locked;
 
     // Events
@@ -163,5 +163,13 @@ contract VendingMachine {
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success, "Transfer failed.");
         emit Withdrawal(msg.sender, amount);
+    }
+
+    receive() external payable { 
+        addFunds();
+    }
+
+    fallback() external payable { 
+        addFunds();
     }
 }

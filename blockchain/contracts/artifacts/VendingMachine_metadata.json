@@ -143,6 +143,10 @@
 				"type": "event"
 			},
 			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
 				"inputs": [],
 				"name": "addFunds",
 				"outputs": [],
@@ -293,6 +297,10 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
 			}
 		],
 		"devdoc": {
@@ -308,7 +316,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/VendingMachine.sol": "VendingMachine"
+			"blockchain/contracts/VendingMachine.sol": "VendingMachine"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -322,7 +330,7 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/ProductLibrary.sol": {
+		"blockchain/contracts/ProductLibrary.sol": {
 			"keccak256": "0x80a0f8970b04b43ae4c0b22018db423b93ad1ccac010d88ce65290887f64534b",
 			"license": "MIT",
 			"urls": [
@@ -330,12 +338,12 @@
 				"dweb:/ipfs/Qmd66DnNTAc45eQusuHL9QvsS9PZf6zcVwWC3Ffcfg73vc"
 			]
 		},
-		"contracts/VendingMachine.sol": {
-			"keccak256": "0xe2f44a4a76116dd854c76ea363bc4bb7583fa0cc4c2d36d8a0ab3747c2e60186",
+		"blockchain/contracts/VendingMachine.sol": {
+			"keccak256": "0x86e7e24083f12c3155ebf7b1a8bb6723260c3ab2960a8c674140a91276f1efb8",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9f36a0bbc62eaa765bd7794253d5dad28c485fda3cbe3617409b1d8a89648367",
-				"dweb:/ipfs/QmVzmS4WV1PhJEwNAzDvbothwhH2CEww9dZgMKZ2utMjvC"
+				"bzz-raw://4edff59916f1349fad01539c75ce17b72c832e2fd29781a46217fff75e70a812",
+				"dweb:/ipfs/QmfMAPRx3EJbsCeUWmuTtfAgJboCKx66Dvbf5GToARkRDT"
 			]
 		}
 	},
